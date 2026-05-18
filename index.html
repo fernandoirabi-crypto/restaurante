@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizza Fazendinha – Carapicuíba, SP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --verde: #2d5a1b;
+    --creme: #fdf6e3;
+    --laranja: #d4531e;
+    --laranja-escuro: #a83c10;
+    --marrom: #4a2c0a;
+    --texto: #2c1a00;
+    --texto-suave: #5a3e1b;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; background: var(--creme); color: var(--texto); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(253,246,227,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(74,44,10,0.12);
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--verde); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--texto-suave); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--laranja); }
+  .nav-cta { background: var(--laranja); color: #fff; border-radius: 2px; padding: 0.6rem 1.4rem; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--laranja-escuro); }
+
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding-top: 70px; overflow: hidden; }
+  .hero-left { padding: 4rem 3rem 4rem 4rem; animation: fadeUp 0.9s ease both; }
+  .hero-right { height: 100vh; position: relative; overflow: hidden; }
+  .hero-right img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-right::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, var(--creme) 0%, transparent 40%); }
+
+  .hero-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--verde); color: #fff; padding: 0.35rem 1rem; border-radius: 2px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 5vw, 5rem); line-height: 1.05; color: var(--marrom); margin-bottom: 1rem; }
+  .hero-title em { color: var(--laranja); font-style: italic; }
+  .hero-sub { font-size: 1.05rem; color: var(--texto-suave); font-weight: 300; line-height: 1.7; margin-bottom: 2rem; }
+  .hero-stars { font-size: 1.2rem; color: #f5a623; margin-bottom: 0.3rem; }
+  .hero-rating { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 2rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary { background: var(--laranja); color: #fff; border: none; border-radius: 2px; padding: 0.9rem 2rem; font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { background: var(--laranja-escuro); transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--verde); border: 2px solid var(--verde); border-radius: 2px; padding: 0.9rem 2rem; font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+  .btn-outline:hover { background: var(--verde); color: #fff; }
+
+  .faixa { background: var(--laranja); padding: 1rem 2rem; display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+  .faixa-item { color: #fff; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .sobre { padding: 5rem 2rem; max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .sobre-img { border-radius: 4px; overflow: hidden; height: 420px; }
+  .sobre-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+  .sobre-img:hover img { transform: scale(1.03); }
+  .sobre-tag { display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--laranja); margin-bottom: 1rem; }
+  .sobre h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--marrom); line-height: 1.2; margin-bottom: 1.2rem; }
+  .sobre p { color: var(--texto-suave); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1rem; }
+  .sobre-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+  .stat-box { background: #fff; border: 1px solid rgba(74,44,10,0.1); border-radius: 4px; padding: 1.2rem; text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--laranja); display: block; }
+  .stat-label { font-size: 0.75rem; color: var(--texto-suave); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .cardapio { background: var(--verde); padding: 5rem 2rem; }
+  .cardapio-inner { max-width: 1000px; margin: 0 auto; }
+  .section-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 0.8rem; display: block; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: #fff; margin-bottom: 0.5rem; }
+  .section-sub { color: rgba(255,255,255,0.65); margin-bottom: 2.5rem; font-size: 0.95rem; }
+
+  .cardapio-tabs { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .tab-btn { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); border-radius: 2px; padding: 0.5rem 1.2rem; font-family: 'Lato', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .tab-btn.active, .tab-btn:hover { background: var(--laranja); color: #fff; border-color: var(--laranja); }
+
+  .pizzas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+  .pizza-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; transition: all 0.25s; display: none; }
+  .pizza-card.visible { display: block; }
+  .pizza-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.12); }
+  .pizza-card-img { height: 180px; overflow: hidden; }
+  .pizza-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+  .pizza-card:hover .pizza-card-img img { transform: scale(1.06); }
+  .pizza-card-body { padding: 1.2rem; }
+  .pizza-nome { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #fff; margin-bottom: 0.4rem; }
+  .pizza-desc { font-size: 0.85rem; color: rgba(255,255,255,0.62); line-height: 1.6; margin-bottom: 1rem; }
+  .pizza-preco { display: inline-block; background: var(--laranja); color: #fff; padding: 0.3rem 0.8rem; border-radius: 2px; font-size: 0.82rem; font-weight: 700; }
+
+  .galeria { padding: 5rem 2rem; }
+  .galeria-inner { max-width: 1000px; margin: 0 auto; }
+  .galeria-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 0.8rem; margin-top: 2.5rem; }
+  .galeria-item { overflow: hidden; border-radius: 4px; }
+  .galeria-item.grande { grid-row: 1 / 3; }
+  .galeria-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+  .galeria-item:hover img { transform: scale(1.05); }
+
+  .depoimentos { padding: 5rem 2rem; background: #fff; }
+  .depoimentos-inner { max-width: 1000px; margin: 0 auto; }
+  .dep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .dep-card { border: 1px solid rgba(74,44,10,0.1); border-radius: 4px; padding: 1.5rem; background: var(--creme); }
+  .dep-stars { color: #f5a623; margin-bottom: 0.8rem; }
+  .dep-texto { color: var(--texto-suave); line-height: 1.7; font-size: 0.95rem; font-style: italic; margin-bottom: 1rem; }
+  .dep-autor { font-size: 0.8rem; font-weight: 700; color: var(--verde); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .pedido { padding: 5rem 2rem; background: var(--marrom); text-align: center; }
+  .pedido h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: #fff; margin-bottom: 1rem; }
+  .pedido p { color: rgba(255,255,255,0.65); font-size: 1rem; margin-bottom: 3rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .pedido-opcoes { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+  .op-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 1.5rem 2rem; min-width: 160px; text-align: center; transition: all 0.2s; text-decoration: none; display: block; }
+  .op-card:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); border-color: var(--laranja); }
+  .op-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+  .op-label { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 0.3rem; }
+  .op-desc { font-size: 0.82rem; color: var(--laranja); font-weight: 700; }
+
+  .info { background: #1a0e00; padding: 4rem 2rem; }
+  .info-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2.5rem; }
+  .info-bloco h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.1rem; margin-bottom: 1rem; }
+  .info-bloco p, .info-bloco a { color: rgba(255,255,255,0.55); font-size: 0.88rem; line-height: 1.9; text-decoration: none; display: block; transition: color 0.2s; }
+  .info-bloco a:hover { color: var(--laranja); }
+  .info-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--laranja); margin-bottom: 0.4rem; display: block; }
+
+  footer { background: #0d0700; padding: 1.2rem 2rem; text-align: center; color: rgba(255,255,255,0.25); font-size: 0.78rem; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { width: 24px; height: 2px; background: var(--texto); display: block; }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { height: 280px; }
+    .hero-right::after { background: linear-gradient(to bottom, var(--creme) 0%, transparent 40%); }
+    .hero-left { padding: 2rem 1.5rem; }
+    .sobre { grid-template-columns: 1fr; gap: 2rem; }
+    .galeria-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .galeria-item.grande { grid-row: auto; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 60px; left: 0; right: 0; background: var(--creme); padding: 1.5rem 2rem; border-bottom: 1px solid rgba(74,44,10,0.12); gap: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">🍕 Fazendinha</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#cardapio">Cardápio</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#pedido">Pedir</a></li>
+  </ul>
+  <a href="https://wa.me/5511991180006?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20fazer%20um%20pedido%20🍕" target="_blank" class="nav-cta">Pedir agora</a>
+  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-badge">🌿 Carapicuíba, SP · Desde 2011</div>
+    <h1 class="hero-title">Pizza<br><em>Fazendinha</em></h1>
+    <p class="hero-sub">Feita com ingredientes frescos, entregue com amor. A pizza favorita do bairro há mais de 13 anos.</p>
+    <div class="hero-stars">★★★★★</div>
+    <p class="hero-rating">5,0 · 26 avaliações no Google</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/5511991180006?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20fazer%20um%20pedido%20🍕" target="_blank" class="btn-primary">🛵 Pedir pelo WhatsApp</a>
+      <a href="#cardapio" class="btn-outline">Ver cardápio</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Pizza artesanal saindo do forno">
+  </div>
+</section>
+
+<div class="faixa">
+  <div class="faixa-item">🔥 Forno artesanal</div>
+  <div class="faixa-item">🚀 Entrega rápida</div>
+  <div class="faixa-item">⭐ Nota 5,0 no Google</div>
+  <div class="faixa-item">🍕 R$40 a R$60</div>
+  <div class="faixa-item">📍 Ana Estela, Carapicuíba</div>
+</div>
+
+<section class="sobre" id="sobre">
+  <div class="sobre-img">
+    <img src="https://images.pexels.com/photos/905847/pexels-photo-905847.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Pizza artesanal">
+  </div>
+  <div>
+    <span class="sobre-tag">Nossa história</span>
+    <h2>Tradição que você sente na primeira mordida</h2>
+    <p>Desde 2011 servindo pizzas com qualidade e carinho na Rua Nova Independência, em Ana Estela, Carapicuíba. Uma pizzaria de bairro que conquistou o coração dos clientes.</p>
+    <p>Super atenciosos e prestativos — nosso compromisso é que sua pizza chegue perfeita e no prazo. Sempre.</p>
+    <div class="sobre-stats">
+      <div class="stat-box"><span class="stat-num">13+</span><span class="stat-label">Anos de história</span></div>
+      <div class="stat-box"><span class="stat-num">5,0</span><span class="stat-label">Nota no Google</span></div>
+      <div class="stat-box"><span class="stat-num">R$40</span><span class="stat-label">A partir de</span></div>
+      <div class="stat-box"><span class="stat-num">🚀</span><span class="stat-label">Entrega rápida</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cardapio" id="cardapio">
+  <div class="cardapio-inner">
+    <span class="section-tag">Cardápio</span>
+    <h2 class="section-title">Escolha a sua favorita</h2>
+    <p class="section-sub">Delivery disponível · R$40 a R$60 por pizza</p>
+    <div class="cardapio-tabs">
+      <button class="tab-btn active" onclick="filtrar('salgada', this)">Salgadas</button>
+      <button class="tab-btn" onclick="filtrar('doce', this)">Doces</button>
+      <button class="tab-btn" onclick="filtrar('todas', this)">Todas</button>
+    </div>
+    <div class="pizzas-grid">
+      <div class="pizza-card visible salgada">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Quatro Queijos"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Quatro Queijos</div>
+          <div class="pizza-desc">Mussarela, catupiry, provolone e parmesão. Para os amantes de queijo.</div>
+          <span class="pizza-preco">A partir de R$40</span>
+        </div>
+      </div>
+      <div class="pizza-card visible salgada">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Calabresa"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Calabresa</div>
+          <div class="pizza-desc">Calabresa fatiada, cebola e azeitona. Um clássico que nunca decepciona.</div>
+          <span class="pizza-preco">A partir de R$40</span>
+        </div>
+      </div>
+      <div class="pizza-card visible salgada">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Margherita"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Margherita</div>
+          <div class="pizza-desc">Molho artesanal, mussarela fresca e manjericão. Clássica e delicada.</div>
+          <span class="pizza-preco">A partir de R$40</span>
+        </div>
+      </div>
+      <div class="pizza-card visible salgada">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Portuguesa"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Portuguesa</div>
+          <div class="pizza-desc">Presunto, ovos, cebola, pimentão e azeitona. Tradicional e saborosa.</div>
+          <span class="pizza-preco">A partir de R$45</span>
+        </div>
+      </div>
+      <div class="pizza-card visible salgada">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/3682837/pexels-photo-3682837.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Frango com Catupiry"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Frango com Catupiry</div>
+          <div class="pizza-desc">Frango desfiado temperado com catupiry cremoso. Irresistível.</div>
+          <span class="pizza-preco">A partir de R$45</span>
+        </div>
+      </div>
+      <div class="pizza-card visible salgada">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/4109111/pexels-photo-4109111.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Champignon"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Champignon</div>
+          <div class="pizza-desc">Champignon, mussarela e alho dourado. Sofisticada e delicada.</div>
+          <span class="pizza-preco">A partir de R$50</span>
+        </div>
+      </div>
+      <div class="pizza-card doce">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/3026808/pexels-photo-3026808.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Chocolate com Morango"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Chocolate com Morango</div>
+          <div class="pizza-desc">Chocolate ao leite com morangos frescos. A favorita da galera.</div>
+          <span class="pizza-preco">A partir de R$50</span>
+        </div>
+      </div>
+      <div class="pizza-card doce">
+        <div class="pizza-card-img"><img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Banana com Canela"></div>
+        <div class="pizza-card-body">
+          <div class="pizza-nome">Banana com Canela</div>
+          <div class="pizza-desc">Banana fatiada, canela, açúcar e leite condensado. Irresistível.</div>
+          <span class="pizza-preco">A partir de R$45</span>
+        </div>
+      </div>
+    </div>
+    <p style="color:rgba(255,255,255,0.4); font-size:0.8rem; margin-top:1.5rem;">* Cardápio ilustrativo. Consulte disponibilidade pelo WhatsApp.</p>
+  </div>
+</section>
+
+<section class="galeria" id="galeria">
+  <div class="galeria-inner">
+    <span class="sobre-tag">Galeria</span>
+    <h2 style="font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--marrom);">Nossa pizzaria em fotos</h2>
+    <div class="galeria-grid">
+      <div class="galeria-item grande">
+        <img src="https://images.pexels.com/photos/1566837/pexels-photo-1566837.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Pizza saindo do forno">
+      </div>
+      <div class="galeria-item">
+        <img src="https://images.pexels.com/photos/905847/pexels-photo-905847.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza artesanal">
+      </div>
+      <div class="galeria-item">
+        <img src="https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza calabresa">
+      </div>
+      <div class="galeria-item">
+        <img src="https://images.pexels.com/photos/1653877/pexels-photo-1653877.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza quatro queijos">
+      </div>
+      <div class="galeria-item">
+        <img src="https://images.pexels.com/photos/1435907/pexels-photo-1435907.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza margherita">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="depoimentos">
+  <div class="depoimentos-inner">
+    <span class="sobre-tag">Avaliações do Google</span>
+    <h2 style="font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--marrom); margin-top:0.5rem;">O que nossos clientes dizem</h2>
+    <div class="dep-grid">
+      <div class="dep-card">
+        <div class="dep-stars">★★★★★</div>
+        <p class="dep-texto">"Pizza deliciosa, entrega super rápida e preço justo!! Recomendo muito."</p>
+        <span class="dep-autor">Cliente Google</span>
+      </div>
+      <div class="dep-card">
+        <div class="dep-stars">★★★★★</div>
+        <p class="dep-texto">"Pizza muito boa e chega no prazo certinho. Nunca me decepcionou."</p>
+        <span class="dep-autor">Cliente Google</span>
+      </div>
+      <div class="dep-card">
+        <div class="dep-stars">★★★★★</div>
+        <p class="dep-texto">"Sou cliente há muitos anos, são uns queridos, super atenciosos e prestativos!!"</p>
+        <span class="dep-autor">Cliente Google</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pedido" id="pedido">
+  <h2>Pronto para pedir?</h2>
+  <p>Escolha como prefere falar com a gente e receba sua pizza quentinha.</p>
+  <div class="pedido-opcoes">
+    <a href="https://wa.me/5511991180006?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20fazer%20um%20pedido%20🍕" target="_blank" class="op-card">
+      <span class="op-icon">💬</span>
+      <div class="op-label">WhatsApp</div>
+      <div class="op-desc">(11) 99118-0006</div>
+    </a>
+    <a href="tel:+5511991180006" class="op-card">
+      <span class="op-icon">📞</span>
+      <div class="op-label">Ligar</div>
+      <div class="op-desc">(11) 99118-0006</div>
+    </a>
+    <a href="https://www.instagram.com/pizzafazendinha/" target="_blank" class="op-card">
+      <span class="op-icon">📷</span>
+      <div class="op-label">Instagram</div>
+      <div class="op-desc">@pizzafazendinha</div>
+    </a>
+  </div>
+  <a href="https://wa.me/5511991180006?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20fazer%20um%20pedido%20🍕" target="_blank" class="btn-primary">Fazer pedido agora 🍕</a>
+</section>
+
+<section class="info">
+  <div class="info-inner">
+    <div class="info-bloco">
+      <h3>Endereço</h3>
+      <span class="info-label">Onde estamos</span>
+      <a href="https://maps.google.com/?q=R.+Nova+Independência,+384,+Carapicuíba+SP" target="_blank">R. Nova Independência, 384<br>Jardim Ana Estela<br>Carapicuíba – SP</a>
+    </div>
+    <div class="info-bloco">
+      <h3>Horário</h3>
+      <span class="info-label">Funcionamento</span>
+      <p>Quarta a Domingo<br>A partir das 18h30<br><br>Fechado seg. e ter.</p>
+    </div>
+    <div class="info-bloco">
+      <h3>Contato</h3>
+      <span class="info-label">Fale com a gente</span>
+      <a href="https://wa.me/5511991180006" target="_blank">WhatsApp: (11) 99118-0006</a>
+      <a href="https://www.instagram.com/pizzafazendinha/" target="_blank">@pizzafazendinha</a>
+      <a href="https://www.facebook.com/PizzaFazendinhaAlex/" target="_blank">Facebook: Pizza Fazendinha</a>
+    </div>
+    <div class="info-bloco">
+      <h3>Delivery</h3>
+      <span class="info-label">Entrega</span>
+      <p>R$40 – R$60 por pizza<br>Entrega rápida e no prazo<br><br>⭐ 5,0 no Google (26 avaliações)</p>
+    </div>
+  </div>
+</section>
+
+<footer>© 2025 Pizza Fazendinha · Carapicuíba, SP · Feito com ❤️</footer>
+
+<script>
+function filtrar(categoria, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pizza-card').forEach(card => {
+    if (categoria === 'todas' || card.classList.contains(categoria)) {
+      card.classList.add('visible');
+    } else {
+      card.classList.remove('visible');
+    }
+  });
+}
+</script>
+</body>
+</html>
